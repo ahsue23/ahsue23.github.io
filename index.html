@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#e8d6ba">
+    <meta name="description" content="따로, 또 함께 만들고 기록하는 삶. 아슈부부의 일상과 생각, 창작물들을 모아두었어요.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="아슈부부">
+    <meta property="og:description" content="따로, 또 함께 만들고 기록하는 삶. 궁금한 곳을 눌러 구경해 보세요!">
+    <title>아슈부부 | 우리의 이야기 모음</title>
+    <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./links.js" defer></script>
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <main class="page" aria-labelledby="page-title">
+      <header class="visually-hidden">
+        <h1 id="page-title">아슈부부</h1>
+        <p>따로, 또 함께 만들고 기록하는 삶. 일상과 생각, 창작물들을 모아두었어요. 궁금한 곳을 눌러 구경해 보세요!</p>
+      </header>
+      <div class="artwork">
+        <img
+          class="artwork__image"
+          src="./assets/ahsue-original.png"
+          width="1080"
+          height="2340"
+          alt=""
+          fetchpriority="high"
+          draggable="false"
+        >
+        <nav class="featured-links" aria-label="주요 링크"></nav>
+      </div>
+      <nav class="extra-links" aria-label="더 많은 이야기" hidden></nav>
+      <noscript>
+        <p class="noscript-message">링크를 이용하려면 브라우저의 JavaScript를 켜 주세요.</p>
+      </noscript>
+    </main>
+    <div class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+  </body>
+</html>
