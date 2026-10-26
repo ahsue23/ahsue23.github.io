@@ -10,32 +10,59 @@
     <meta property="og:description" content="따로, 또 함께 만들고 기록하는 삶. 궁금한 곳을 눌러 구경해 보세요!">
     <title>아슈부부 | 우리의 이야기 모음</title>
     <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
+    <link rel="preload" href="./assets/fonts/uhbee-sehyun.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="./assets/fonts/lee-seoyun.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="./styles.css">
     <script src="./links.js" defer></script>
     <script src="./app.js" defer></script>
   </head>
   <body>
     <main class="page" aria-labelledby="page-title">
-      <header class="visually-hidden">
-        <h1 id="page-title">아슈부부</h1>
-        <p>따로, 또 함께 만들고 기록하는 삶. 일상과 생각, 창작물들을 모아두었어요. 궁금한 곳을 눌러 구경해 보세요!</p>
+      <header class="intro">
+        <h1 id="page-title" class="visually-hidden">아슈부부</h1>
+        <p class="visually-hidden">따로, 또 함께 만들고 기록하는 삶. 일상과 생각, 창작물들을 모아두었어요. 궁금한 곳을 눌러 구경해 보세요!</p>
+        <img class="artwork" src="./assets/artwork/intro.webp" width="1080" height="850" alt="" fetchpriority="high" draggable="false">
       </header>
-      <div class="artwork">
-        <img
-          class="artwork__image"
-          src="./assets/ahsue-original.png"
-          width="1080"
-          height="2340"
-          alt=""
-          fetchpriority="high"
-          draggable="false"
-        >
-        <nav class="featured-links" aria-label="주요 링크"></nav>
-      </div>
-      <nav class="extra-links" aria-label="더 많은 이야기" hidden></nav>
-      <noscript>
-        <p class="noscript-message">링크를 이용하려면 브라우저의 JavaScript를 켜 주세요.</p>
-      </noscript>
+      <nav class="featured-links" aria-label="주요 링크">
+        <a class="featured-link" data-card="youtube" href="https://www.youtube.com/@ahsue_23">
+          <img class="artwork" src="./assets/artwork/featured-youtube.webp" width="1080" height="400" alt="" draggable="false">
+          <span class="visually-hidden">아슈부부 유튜브 — 긴 영상으로 만나는 일상</span>
+          <span class="featured-hit-area" aria-hidden="true"></span>
+        </a>
+        <a class="featured-link" data-card="blog" href="https://blog.naver.com/ahsue_23">
+          <img class="artwork" src="./assets/artwork/featured-blog.webp" width="1080" height="400" alt="" draggable="false">
+          <span class="visually-hidden">아현의 블로그 — 일상과 생각을 담아낸 기록들</span>
+          <span class="featured-hit-area" aria-hidden="true"></span>
+        </a>
+        <a class="featured-link" data-card="studio" href="https://zinesue.github.io/">
+          <img class="artwork" src="./assets/artwork/featured-studio.webp" width="1080" height="400" alt="" draggable="false">
+          <span class="visually-hidden">진수의 생각창고 — 머릿속 상상이 현실이 되는 곳</span>
+          <span class="featured-hit-area" aria-hidden="true"></span>
+        </a>
+        <a class="featured-link" data-card="fourth" href="https://smartstore.naver.com/ahsue_23/products/12590545490">
+          <img class="artwork" src="./assets/artwork/featured-shop.webp" width="1080" height="365" alt="" draggable="false">
+          <span class="visually-hidden">아슈부부 문방구 — 지난 2026 탁상달력 보기</span>
+          <span class="featured-hit-area" aria-hidden="true"></span>
+        </a>
+      </nav>
+      <section class="stories" aria-labelledby="stories-title" hidden>
+        <header>
+          <h2 id="stories-title" class="visually-hidden">함께하는 이야기</h2>
+          <p class="visually-hidden">아슈부부가 경험하고 소개하는 것들!</p>
+          <img class="artwork" src="./assets/artwork/stories-heading.webp" width="1080" height="220" alt="" draggable="false">
+        </header>
+        <div class="story-links"></div>
+      </section>
+      <section class="business-contact" aria-labelledby="contact-title">
+        <h2 id="contact-title" class="visually-hidden">비즈니스 문의</h2>
+        <img class="artwork" src="./assets/artwork/contact-heading.webp" width="1080" height="118" alt="" draggable="false">
+        <div class="contact-line">
+          <a class="contact-email" href="mailto:ahsue23@gmail.com">ahsue23@gmail.com</a>
+          <button class="copy-email" type="button" aria-label="비즈니스 문의 이메일 주소 복사" hidden><span>주소복사</span></button>
+        </div>
+        <input class="copy-fallback" type="text" value="ahsue23@gmail.com" readonly aria-label="복사할 이메일 주소" hidden>
+      </section>
+      <footer class="copyright">© 2026 ahsuebubu. All rights reserved.</footer>
     </main>
     <div class="toast" role="status" aria-live="polite" aria-atomic="true"></div>
   </body>

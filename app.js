@@ -1,109 +1,128 @@
 (() => {
   "use strict";
-
   const config = window.AHSUE_LINKS || {};
-  const featured = document.querySelector(".featured-links");
-  const extras = document.querySelector(".extra-links");
+  const stories = document.querySelector(".stories");
+  const storyLinks = document.querySelector(".story-links");
   const toast = document.querySelector(".toast");
   let toastTimer;
 
-  function getUrl(value) {
+  function getWebUrl(value) {
     if (typeof value !== "string" || !value.trim()) return null;
     try {
       const url = new URL(value.trim());
-      return ["https:", "http:", "mailto:", "tel:"].includes(url.protocol) ? url.href : null;
-    } catch {
-      return null;
-    }
+      return ["https:", "http:"].includes(url.protocol) ? url.href : null;
+    } catch { return null; }
   }
 
-  function announce(label) {
+  function announce(message) {
     clearTimeout(toastTimer);
-    toast.textContent = `${label} · 아직 준비 중이에요. 조금만 기다려 주세요!`;
+    toast.textContent = message;
     toast.classList.add("is-visible");
-    toastTimer = setTimeout(() => {
-      toast.classList.remove("is-visible");
-      toast.textContent = "";
-    }, 3200);
+    toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 3200);
   }
 
-  function makeLink(data, label) {
-    const url = getUrl(data.url);
-    const element = document.createElement(url ? "a" : "button");
-    if (url) {
-      element.href = url;
-      if (config.openInNewTab && /^https?:/.test(url)) {
-        element.target = "_blank";
-        element.rel = "noopener noreferrer";
-        element.setAttribute("aria-label", `${label} (새 탭에서 열림)`);
-      } else {
-        element.setAttribute("aria-label", label);
-      }
+  function setDestination(link, url, label) {
+    link.href = url;
+    if (config.openInNewTab) {
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.setAttribute("aria-label", `${label} (새 탭에서 열림)`);
     } else {
-      element.type = "button";
-      element.setAttribute("aria-label", `${label} (준비 중 안내)`);
-      element.addEventListener("click", () => announce(label));
+      link.removeAttribute("target");
+      link.removeAttribute("rel");
+      link.setAttribute("aria-label", label);
     }
-    return element;
   }
 
-  function textElement(tag, className, value) {
-    const element = document.createElement(tag);
-    element.className = className;
-    element.textContent = value;
-    return element;
-  }
-
-  const fixedCards = [
-    ["youtube", "아슈부부 유튜브"],
-    ["blog", "아현의 블로그"],
-    ["studio", "진수의 창작실"],
-    ["fourth", "네 번째 이야기"],
-  ];
-
-  for (const [id, fallbackLabel] of fixedCards) {
-    const data = config.featured?.[id] || {};
-    const label = (id === "fourth" && data.title) || data.label || fallbackLabel;
-    const link = makeLink(data, label);
-    link.className = `featured-link featured-link--${id}`;
-    link.dataset.card = id;
-    if (id === "fourth" && data.title) {
-      const copy = document.createElement("span");
-      copy.className = "fourth-copy";
-      copy.append(textElement("span", "fourth-copy__title", data.title));
-      if (data.description) copy.append(textElement("span", "fourth-copy__description", data.description));
-      link.append(copy);
+  document.querySelectorAll(".featured-link").forEach((link) => {
+    const data = config.featured?.[link.dataset.card];
+    if (!data) return;
+    const label = data.label || link.textContent.trim();
+    const url = getWebUrl(data.url);
+    if (url) {
+      setDestination(link, url, label);
+    } else {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = link.className;
+      button.dataset.card = link.dataset.card;
+      button.setAttribute("aria-label", `${label} (준비 중)`);
+      button.addEventListener("click", () => announce(`${label} · 아직 준비 중이에요.`));
+      button.append(...link.childNodes);
+      link.replaceWith(button);
     }
-    featured.append(link);
-  }
+  });
 
   const additionalLinks = Array.isArray(config.extra) ? config.extra : [];
-  additionalLinks.forEach((data, index) => {
-    if (!data || typeof data.title !== "string" || !data.title.trim()) return;
-    const link = makeLink(data, data.title);
-    link.className = "paper-link";
-    link.dataset.tone = ["sage", "rose", "blue", "honey"].includes(data.tone) ? data.tone : "sage";
-    const paper = Number(data.paper);
-    link.dataset.paper = [1, 2, 3, 4].includes(paper) ? String(paper) : String((index % 4) + 1);
+  additionalLinks.forEach((data) => {
+    const url = getWebUrl(data?.url);
+    if (!url || typeof data.title !== "string" || !data.title.trim()) return;
+    const link = document.createElement("a");
+    link.className = "story-link";
+    setDestination(link, url, data.title.trim());
     const copy = document.createElement("span");
-    copy.className = "paper-link__copy";
-    copy.append(textElement("span", "paper-link__title", data.title));
-    if (data.description) copy.append(textElement("span", "paper-link__description", data.description));
+    copy.className = "story-copy";
+    const title = document.createElement("span");
+    title.className = "story-title";
+    title.textContent = data.title.trim();
+    copy.append(title);
+    if (typeof data.description === "string" && data.description.trim()) {
+      const description = document.createElement("span");
+      description.className = "story-description";
+      description.textContent = data.description.trim();
+      copy.append(description);
+    }
     link.append(copy);
-    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("class", "paper-link__arrow");
-    svg.setAttribute("viewBox", "0 0 12 20");
-    svg.setAttribute("aria-hidden", "true");
-    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    path.setAttribute("d", "M3 3 9 10 3 17");
-    path.setAttribute("fill", "none");
-    path.setAttribute("stroke", "currentColor");
-    path.setAttribute("stroke-width", "2.7");
-    path.setAttribute("stroke-linecap", "round");
-    path.setAttribute("stroke-linejoin", "round");
-    svg.append(path);
-    link.append(svg);
-    extras.append(link);
+    storyLinks.append(link);
   });
-  extras.hidden = extras.childElementCount === 0;
+  stories.hidden = storyLinks.childElementCount === 0;
+
+  const email = typeof config.email === "string" && config.email.trim() ? config.email.trim() : "ahsue23@gmail.com";
+  const emailLink = document.querySelector(".contact-email");
+  const copyButton = document.querySelector(".copy-email");
+  const copyLabel = copyButton.querySelector("span");
+  const fallback = document.querySelector(".copy-fallback");
+  emailLink.textContent = email;
+  emailLink.href = `mailto:${email}`;
+  fallback.value = email;
+  copyButton.hidden = false;
+  let copyTimer;
+
+  async function copyEmail() {
+    try {
+      await navigator.clipboard.writeText(email);
+      return true;
+    } catch {
+      // Older browsers or a blocked clipboard may allow a user-triggered copy.
+      fallback.hidden = false;
+      fallback.focus();
+      fallback.select();
+      fallback.setSelectionRange(0, email.length);
+      try {
+        if (document.execCommand("copy")) {
+          fallback.hidden = true;
+
+          return true;
+        }
+      } catch { /* Leave the selected address visible for a manual copy. */ }
+      return false;
+    }
+  }
+
+  copyButton.addEventListener("click", async () => {
+    clearTimeout(copyTimer);
+    copyButton.disabled = true;
+    const copied = await copyEmail();
+    copyButton.disabled = false;
+    if (copied) {
+      copyButton.focus({ preventScroll: true });
+      fallback.hidden = true;
+      copyLabel.textContent = "복사완료!";
+      announce("이메일 주소를 복사했어요.");
+      copyTimer = setTimeout(() => { copyLabel.textContent = "주소복사"; }, 2400);
+    } else {
+      copyLabel.textContent = "주소복사";
+      announce("자동 복사가 어려워요. 아래 선택된 이메일 주소를 직접 복사해 주세요.");
+    }
+  });
 })();
