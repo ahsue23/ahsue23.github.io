@@ -9,7 +9,7 @@ window.AHSUE_LINKS = {
     youtube: { label: "아슈부부 유튜브", url: "https://www.youtube.com/@ahsue_23" },
     blog: { label: "아현의 블로그", url: "https://blog.naver.com/ahsue_23" },
     studio: { label: "진수의 생각창고", url: "https://zinesue.github.io/" },
-    fourth: { label: "아슈부부 문방구", url: "https://smartstore.naver.com/ahsue_23/products/12590545490" },
+    fourth: { label: "아슈부부 문방구", url: "https://smartstore.naver.com/ahsue_23/products/13842799408" },
   },
 
   // '함께하는 이야기' 카드: 아래 항목을 복사하거나 삭제하세요.
